@@ -30,6 +30,12 @@
 					</td>
 				</tr>
 				<tr>
+					<th>Max Tree Height: </th>
+					<td align="center" colspan="3">
+						<input type="text" name="tree_height" size="45" value="4" onfocus="this.value=''">
+					</td>
+				</tr>
+				<tr>
 					<td align="center" colspan="5">
 						<input type="submit" value="Submit Quote"/>
 					</td>

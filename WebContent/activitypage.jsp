@@ -17,6 +17,7 @@
 	 
 	 	 <p> Create a quote Below!</p>
 	 	 <div align="center">
+	 	 
         <table border="1" cellpadding="6">
             <caption><h2>Logged In User</h2></caption>
             <tr>
@@ -25,7 +26,7 @@
                 <th>Last name</th>
                 <th>Address</th>
                 <th>Birthday</th>
-                <th>cash_bal($)</th>
+                
                 
             </tr>
             
@@ -36,7 +37,26 @@
                  <td><c:out value="${listCurrUserLastName}" /></td>
                  <td><c:out value= "${listCurrUserAddNum} ${listCurrUserAddSt} ${listCurrUserAddCity} ${listCurrUserAddState} ${listCurrUserZip}" /></td>
                  <td><c:out value="${listCurrUserBirth}" /></td>
+                 
+            </tr>        
+            
+        </table>
+        
+        <table border="1" cellpadding="6">
+            <caption><h2>User Statistics</h2></caption>
+            <tr>
+                <th>Total Trees</th>
+                <th>Balance</th>
+                <th>Total Paid</th>
+                
+            </tr>
+            
+            
+            <tr style="text-align:center">
+                 
+                 <td><c:out value="${listCurrUserTrees}"/></td>
                  <td><c:out value="${listCurrUserCash}"/></td>
+                 <td><c:out value="${listCurrUserPaid}"/></td>
             </tr>        
             
         </table>

@@ -28,7 +28,8 @@
                 <th>Address</th>
                 <th>Password</th>
                 <th>Birthday</th>
-                <th>cash_bal($)</th>
+                <th>Balance($)</th>
+                <th>Total Trees Cut</th>
                 
             </tr>
             
@@ -41,6 +42,7 @@
                     <td><c:out value="${users.password}" /></td>
                     <td><c:out value="${users.birthday}" /></td>
                     <td><c:out value="${users.cash_bal}"/></td>
+                    <td><c:out value="0"/></td>
                     
             </c:forEach>
         </table>

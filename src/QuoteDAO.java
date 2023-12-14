@@ -92,13 +92,15 @@ public class QuoteDAO {
             int quote_id = resultSet.getInt("quote_id");
             String firstName = resultSet.getString("firstName");
             String date = resultSet.getString("date");
-            String num_trees = resultSet.getString("num_trees");
+            int num_trees = Integer.parseInt(resultSet.getString("num_trees"));
             int price = resultSet.getInt("price");
             String status = resultSet.getString("status");
-            boolean completed = resultSet.getBoolean("completed");  
+            boolean completed = resultSet.getBoolean("completed");
+            int loops = resultSet.getInt("loops");
+            int tree_height = resultSet.getInt("tree_height");
             
           
-            Quote quotes = new Quote(quote_id, firstName, date, num_trees, price, status, completed);
+            Quote quotes = new Quote(quote_id, firstName, date, num_trees, price, status, completed, loops, tree_height);
             listQuote.add(quotes);
         }        
         System.out.println(listQuote.size());
@@ -112,16 +114,17 @@ public class QuoteDAO {
     
     public void insert(Quote quote) throws SQLException {
     	connect_func();         
-		String sql = "insert into Quotes(quote_id, firstName, date, num_trees, price, status, completed) values (?, ?, ?, ?, ?, ?, ?)";
+		String sql = "insert into Quotes(quote_id, firstName, date, num_trees, price, status, completed, loops, tree_height) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setInt(1, quote.getQuote_Id());
 			preparedStatement.setString(2, quote.getFirst_Name());
 			preparedStatement.setString(3, quote.get_Date());
-			preparedStatement.setString(4, quote.getNum_Trees());
+			preparedStatement.setInt(4, quote.getNum_Trees());
 			preparedStatement.setInt(5, quote.get_Price());
 			preparedStatement.setString(6, quote.get_Status());
 			preparedStatement.setBoolean(7, quote.get_Completed());		
-					
+			preparedStatement.setInt(8, quote.get_loops());
+			preparedStatement.setInt(9, quote.get_height());
 					
 		preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -155,12 +158,15 @@ public class QuoteDAO {
         if (resultSet.next()) {
         	int quote_id = resultSet.getInt("quote_id");
         	String date = resultSet.getString("date");
-            String num_trees = resultSet.getString("num_trees");
+            int num_trees = resultSet.getInt("num_trees");
             int price = resultSet.getInt("price");
             String status = resultSet.getString("status");
             boolean completed = resultSet.getBoolean("completed");
+            int loops = resultSet.getInt("loops");
+            int tree_height = resultSet.getInt("tree_height");
             
-            quote = new Quote(quote_id, fName, date, num_trees, price, status, completed);
+          
+            Quote quotes = new Quote(quote_id, fName, date, num_trees, price, status, completed, loops, tree_height);
         }
          
         resultSet.close();
@@ -183,24 +189,26 @@ public class QuoteDAO {
 					        	"price DECIMAL(13,2) DEFAULT 0, " + 
 					        	"num_trees VARCHAR(10) NOT NULL, " + 
 					        	"status VARCHAR(8) DEFAULT 'pending', " + 
-					        	"completed BOOLEAN DEFAULT false, " + 
+					        	"completed BOOLEAN DEFAULT false, " +
+					        	"loops INT DEFAULT 0," +
+					        	"tree_height INT," +
 					        	"PRIMARY KEY (quote_id)" + "); "),					        		
 					        
         					};
         
     
         
-        String[] TUPLES_QUOTES = {("insert into Quotes(quote_id,firstName, date, num_trees, price, status, completed)"+
-    			"values (quote_id, 'Don', '2023-10-01', '1', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-02', '2', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-03', '3', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-04', '1', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-05', '2', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-06', '3', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-07', '1', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-08', '4', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-09', '5', '0', 'pending', false),"+
-        				"(quote_id, 'Hussein','2023-10-10', '2', '0', 'pending', false);")        		
+        String[] TUPLES_QUOTES = {("insert into Quotes(quote_id,firstName, date, num_trees, price, status, completed, loops, tree_height)"+
+    			"values (quote_id, 'Don', '2023-10-01', '1', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-02', '2', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-03', '3', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-04', '1', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-05', '2', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-06', '3', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-07', '1', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-08', '4', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-09', '5', '0', 'pending', false, 0, 12),"+
+        				"(quote_id, 'Hussein','2023-10-10', '2', '0', 'pending', false, 0, 12);")        		
         					};
         
         //for loop to put these in database

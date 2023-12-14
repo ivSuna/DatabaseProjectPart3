@@ -136,6 +136,8 @@ public class ControlServlet extends HttpServlet {
 	    	request.setAttribute("listCurrUserZip", tempCurrUser.getAdress_zip_code());
 	    	request.setAttribute("listCurrUserBirth", tempCurrUser.getBirthday());
 	    	request.setAttribute("listCurrUserCash", tempCurrUser.getCash_bal());
+	    	request.setAttribute("listCurrUserTrees", tempCurrUser.getTotalTrees());
+	    	request.setAttribute("listCurrUserPaid", tempCurrUser.getTotalPaid());
 	    	
 	    	request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 	    }
@@ -236,12 +238,13 @@ public class ControlServlet extends HttpServlet {
 	    private void createQuote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String firstName = request.getParameter("firstName");
 	   	 	String date = request.getParameter("date");
-	   	 	String num_trees = request.getParameter("num_trees");
+	   	 	int num_trees = Integer.parseInt(request.getParameter("num_trees"));
+	   	 	int height = Integer.parseInt(request.getParameter("tree_height"));
 	   	 	
 	   	 	
 	  
 		   	
-		    Quote quote = new Quote(firstName, date, num_trees, 0, "pending", false);
+		    Quote quote = new Quote(firstName, date, num_trees, 0, "pending", false, 0, height);
 		   	QuoteDAO.insert(quote);
 		   	logout(request, response);
 		   	System.out.println("Quote Created - Added to database");

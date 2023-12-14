@@ -99,71 +99,21 @@ public class userDAO
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             int cash_bal = resultSet.getInt("cash_bal");
+            int total_trees = resultSet.getInt("total_trees");
+            int total_paid = resultSet.getInt("total_paid");
            
 
              
             user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, cash_bal);
+            users.setTotalTrees(total_trees);
+            users.setTotalTrees(total_paid);
             listUser.add(users);
         }        
         resultSet.close();
         disconnect();        
         return listUser;
-    }
-    /*
-    public List<Quote> listAllQuotes() throws SQLException {
-        List<Quote> listQuote = new ArrayList<Quote>();        
-        String sql = "SELECT * FROM Quotes";      
-        connect_func();      
-        statement = (Statement) connect.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-         
-        while (resultSet.next()) {
-            int quote_id = resultSet.getInt("quote_id");
-            String date = resultSet.getString("date");
-            String num_trees = resultSet.getString("num_trees");
-            int price = resultSet.getInt("price");
-            String status = resultSet.getString("status");
-            boolean completed = resultSet.getBoolean("completed");  
-            
-          
-            Quote quote = new Quote(quote_id, date, num_trees, price, status, completed);
-            listQuote.add(quote);
-        }        
-        resultSet.close();
-        disconnect();        
-        return listQuote;
     }
     
-    public List<Admin> listAllAdmins() throws SQLException {
-        List<Admin> listUser = new ArrayList<Admin>();        
-        String sql = "SELECT * FROM Admins";      
-        connect_func();      
-        statement = (Statement) connect.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-         
-        while (resultSet.next()) {
-            String name = resultSet.getString("name");
-            String firstName = resultSet.getString("firstName");
-            String lastName = resultSet.getString("lastName");
-            String password = resultSet.getString("password");
-            String birthday = resultSet.getString("birthday");
-            String adress_street_num = resultSet.getString("adress_street_num"); 
-            String adress_street = resultSet.getString("adress_street"); 
-            String adress_city = resultSet.getString("adress_city"); 
-            String adress_state = resultSet.getString("adress_state"); 
-            String adress_zip_code = resultSet.getString("adress_zip_code"); 
-            int cash_bal = resultSet.getInt("cash_bal");
-           
-
-             
-            user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, cash_bal);
-            listUser.add(users);
-        }        
-        resultSet.close();
-        disconnect();        
-        return listUser;
-    }
-    */
     
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
@@ -173,7 +123,7 @@ public class userDAO
     
     public void insert(user users) throws SQLException {
     	connect_func("root","pass1234");         
-		String sql = "insert into Clients(email, firstName, lastName, password, birthday,adress_street_num, adress_street,adress_city,adress_state,adress_zip_code,cash_bal) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)";
+		String sql = "insert into Clients(email, firstName, lastName, password, birthday,adress_street_num, adress_street,adress_city,adress_state,adress_zip_code,cash_bal, total_trees) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			preparedStatement.setString(1, users.getEmail());
 			preparedStatement.setString(2, users.getFirstName());
@@ -186,7 +136,8 @@ public class userDAO
 			preparedStatement.setString(9, users.getAdress_state());		
 			preparedStatement.setString(10, users.getAdress_zip_code());		
 			preparedStatement.setInt(11, users.getCash_bal());		
-					
+			preparedStatement.setInt(12, users.getTotalTrees());
+			preparedStatement.setInt(13, users.getTotalPaid());
 
 		preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -249,8 +200,12 @@ public class userDAO
             String adress_state = resultSet.getString("adress_state"); 
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             int cash_bal = resultSet.getInt("cash_bal");
+            int total_trees = resultSet.getInt("total_trees");
+            int total_paid = resultSet.getInt("total_paid");
             
             user = new user(email, firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,cash_bal);
+            user.setTotalTrees(total_trees);
+            user.setTotalPaid(total_paid);
         }
          
         resultSet.close();
@@ -341,34 +296,29 @@ public class userDAO
 					            "adress_state VARCHAR(2),"+ 
 					            "adress_zip_code VARCHAR(5),"+ 
 					            "cash_bal DECIMAL(13,2) DEFAULT 0,"+
+					            "total_trees INT DEFAULT 0,"+
+					            "total_paid DECIMAL(13,2) DEFAULT 0," +
 					            "PRIMARY KEY (email) "+"); "),
 					        
-					        "drop table if exists Admins; ",
-					        ("CREATE TABLE if not exists Admins( " +
-					        	"name VARCHAR(30) NOT NULL, " +
-					        	"pass VARCHAR(30) NOT NULL, " +
-					        	"PRIMARY KEY (name)" + "); ")					        		
+					        				        		
 					        
         					};
         
-        String[] TUPLES_CLIENTS = {("insert into Clients(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal)"+
-        			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202','0'),"+
-			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '1969-03-20', '1000', 'hi street', 'mama', 'MO', '12345','0'),"+
-			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1980-02-02', '1234', 'ivan street', 'tata','CO','12561','0'),"+
-			    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '2002-02-02', '3214','marko street', 'brat', 'DU', '54321','0'),"+
-			    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '1971-06-15', '4500', 'frey street', 'sestra', 'MI', '48202','0'),"+
-			    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '2000-03-14', '1245', 'm8s street', 'baka', 'IL', '48000','0'),"+
-			    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '1999-06-15', '2468', 'yolos street', 'ides', 'CM', '24680','0'),"+
-			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '2021-06-14', '4680', 'egypt street', 'lolas', 'DT', '13579','0'),"+
-			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '1706-06-05', '1234', 'sign street', 'samo ne tu','MH', '09876','0'),"+
-			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654','0'),"+
-			    			"('root', 'default', 'default','pass1234', '2021-01-01', '0000', 'Default', 'Default', '0', '00000','0');")
+        String[] TUPLES_CLIENTS = {("insert into Clients(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, total_trees, total_paid)"+
+        			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202','0','0','0'),"+
+			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '1969-03-20', '1000', 'hi street', 'mama', 'MO', '12345','0','0','0'),"+
+			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1980-02-02', '1234', 'ivan street', 'tata','CO','12561','0','0','0'),"+
+			    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '2002-02-02', '3214','marko street', 'brat', 'DU', '54321','0','0','0'),"+
+			    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '1971-06-15', '4500', 'frey street', 'sestra', 'MI', '48202','0','0','0'),"+
+			    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '2000-03-14', '1245', 'm8s street', 'baka', 'IL', '48000','0','0','0'),"+
+			    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '1999-06-15', '2468', 'yolos street', 'ides', 'CM', '24680','0','0','0'),"+
+			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '2021-06-14', '4680', 'egypt street', 'lolas', 'DT', '13579','0','0','0'),"+
+			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '1706-06-05', '1234', 'sign street', 'samo ne tu','MH', '09876','0','0','0'),"+
+			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654','0','0','0'),"+
+			    			"('root', 'default', 'default','pass1234', '2021-01-01', '0000', 'Default', 'Default', '0', '00000','0','0','0');")
 			    			};
         
-        String[] TUPLES_ADMINS = {("insert into Admins(name, pass)"+
-    			"values ('root', 'pass1234'),"+
-        				"('David Smith', 'david1234');")        		
-        					};
+        
         
         //for loop to put these in database
         for (int i = 0; i < INITIAL.length; i++)
@@ -376,9 +326,7 @@ public class userDAO
         
         for (int i = 0; i < TUPLES_CLIENTS.length; i++)	
         	statement.execute(TUPLES_CLIENTS[i]);
-        
-        for (int i = 0; i < TUPLES_ADMINS.length; i++)	
-        	statement.execute(TUPLES_ADMINS[i]);
+       
      
         
         

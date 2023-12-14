@@ -11,6 +11,8 @@ public class user
 	    protected String adress_zip_code;
 	    protected String birthday;
 	    protected int cash_bal;
+	    protected int totalTrees;
+	    protected int total_paid;
 	 
 	    //constructors
 	    public user() {
@@ -25,6 +27,8 @@ public class user
 	    {
 	    	this(firstName,lastName,password,birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,cash_bal);
 	    	this.email = email;
+	    	this.totalTrees = 0;
+	    	this.total_paid = 0;
 	    }
 	 
 	
@@ -40,6 +44,8 @@ public class user
 	        this.adress_state = adress_state;
 	        this.adress_zip_code = adress_zip_code;
 	        this.cash_bal = cash_bal;
+	        this.totalTrees = 0;
+	        this.total_paid = 0;
 	        
 	    }
 	    
@@ -117,6 +123,19 @@ public class user
 	    	this.cash_bal = cash_bal;
 	    }
 	    
+	    public int getTotalTrees() {
+	    	return totalTrees;
+	    }
+	    public void setTotalTrees(int totalTrees) {
+	    	this.totalTrees = totalTrees;
+	    }
+	    
+	    public int getTotalPaid() {
+	    	return total_paid;
+	    }
+	    public void setTotalPaid(int total_paid) {
+	    	this.total_paid = total_paid;
+	    }
 	    
 	}
 
